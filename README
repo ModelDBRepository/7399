@@ -1,0 +1,27 @@
+Lytton WW. Adapting a feedforward heteroassociative network to
+Hodgkin-Huxley dynamics.  J Computational Neuroscience, 5:353--364, 1998.
+
+At launch this example quantitatively reproduces figure 5 of the paper.
+The window appearance is shown in fig5.gif.
+
+For questions about the model contact Bill Lytton at
+billl@neurosim.downstate.edu
+
+NB: program uses SNS synaptic formalism that predates NetCon.
+Also it supplies its own standard run library so Graphs
+from the NEURONMainMenu will not work. Run different
+patterns with
+	show(2)
+where the 2 may be replaced by an integer in the range from 0 to 59.
+The results of each run will be displayed in the tray after the run.
+
+The 'WARNING nsyn==0' messages are irrelevant for this example.
+
+Some non-substantive changes to the original code were made by Michael Hines
+to allow it to run on mswin and mac os. Under mswin, this model can only
+be run using NEURON version 5.2 2002/02/28 or later since it makes use of
+calls to sprintf and hoc_obj_file_arg which were not exported by earlier
+versions. On a MAC you may need to increase the memory size for NEURON
+to 24MB.
+
+

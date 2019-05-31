@@ -1,0 +1,36 @@
+// $Id: params.hoc,v 1.22 1996/09/16 00:07:58 billl Exp $
+
+dt          = .25
+printStep = dt
+tstop   = 600
+celsius     = 37.0
+seed = 518139
+v_init       = -60.
+
+//* CHANNELS
+forsec "NRN" { 
+  insert Pass
+  g_Pass = 3e-6
+  insert naf
+  gmax_naf = 0.03
+  insert kdr
+  gmax_kdr = 0.025
+}
+
+//* SYNAPSES
+GMAX_AMPA = 1e-3
+GMAX_GABAA = 1e-3
+Erev_AMPA = -20
+Erev_GABAA = -100
+Cdur_AMPA = 1
+Cdur_GABAA = 1
+Alpha_AMPA = 1
+Alpha_GABAA = 1
+Beta_AMPA = 0.35
+Beta_GABAA = 0.35
+Deadtime_AMPA = 1
+Deadtime_GABAA = 1
+DELAY_AMPA = 0
+DELAY_GABAA = 0
+delset("AMPA")
+delset("GABAA")

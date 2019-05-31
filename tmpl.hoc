@@ -1,0 +1,52 @@
+// $Id: tmpl.hoc,v 1.8 1996/07/19 02:05:00 billl Exp $
+
+install_vecst()
+install_matrix()
+
+//* NRN
+
+begintemplate NRN
+  public soma
+  public ampa, gaba, p1,p2
+  external mkcode
+  public up
+  objectvar p1,p2,ampa,gaba
+  objref this,up
+
+  create soma
+
+  proc init() { 
+    col = $1 num = $2 inps = $3
+    soma {diam = 10   L = 31.831}
+    access soma
+    // type, col, pre0, tier
+    p1 = new PRESYN(0.5,mkcode(1,1,col,num))
+    p2 = new PRESYN(0.5,mkcode(1,2,col,num))
+    ampa = new AMPA(0.5,mkcode(1,1,col,num),inps)
+    gaba = new GABAA(0.5,mkcode(1,2,col,num),1)
+  }
+endtemplate NRN
+
+//* Defining hippo lamella
+begintemplate LAM
+  public nrn,sumr,ampalist,gabalist
+
+  objref nrn[1]
+  objref sumr[1]
+
+  proc init() { 
+    lnum = $1 cnum = $2 inum = $3
+    objectvar nrn[cnum]
+    for i=0,cnum-1 { nrn[i] = new NRN(lnum,i,inum) }
+    sumr[0] = new NRN(lnum,cnum,cnum)
+  }
+
+  proc ampalist () { local i
+      $o1.remove_all 
+      for i=0,cnum-1 { $o1.append(nrn[i].ampa) }
+  }
+  proc gabalist () { local i
+      $o1.remove_all 
+      for i=0,cnum-1 { $o1.append(nrn[i].gaba) }
+  }
+endtemplate LAM

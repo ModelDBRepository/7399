@@ -1,0 +1,60 @@
+// $Id: net.hoc,v 1.74 1996/09/05 12:22:49 billl Exp $
+
+//* NETWORK CONSTANTS
+nlam = 1 // number of laminae
+npatt = 60 // number of input/output patterns
+convn = 1
+kalap = 0.5 // require conv from >3.5 (ie 4) outputs
+conva = 0
+double ndot[convn], xdot[convn], ddot[convn]
+double szinp[convn]
+for ii=0,conva-1 { szinp[ii] = 80 } // the size of the input (N)
+for ii=conva,convn-1 { szinp[ii] = 300 } // the size of the input (N)
+szout = 40  // the size of the output (M)
+BVBASE = 0.0 // use BVBASE/1 binary vectors
+
+//* DECLARATIONS
+clearsyns()
+seed = 243545
+vseed(seed)
+objref mat[convn],inhv[convn],ivl[convn],ovl,test[convn]
+ovl = new List()  // input  vector list
+for ii=0,convn-1 {
+  inhv[ii] = new Vector(szout)
+  ivl[ii] = new List()  // output vector list
+  test[ii] = new Vector(szout)
+  mat[ii] = new Vector(szinp[ii]*szout)
+}
+
+//* CREATE MATs
+mkiovec(ovl,szout)
+for ii=0,convn-1 {
+  crosstalk(ii)
+  makeinh(inhv[ii],ovl,ii)
+  mkiovec(ivl[ii],szinp[ii])
+  makemat(mat[ii],ivl[ii],ovl)
+}
+
+//* CREATE CELLS
+create incell[szinp]
+create ininh
+objref inp[szinp], inplist, ininhp
+inplist = new List()
+for ii=0,szinp-1 { 
+  incell[ii] inp[ii] = new PRESYN(0.5,-ii-1) 
+  inplist.append(inp[ii])
+}
+ininh ininhp = new PRESYN(0.5,1) 
+objref lam[nlam]
+for ii=0,nlam-1 lam[ii] = new LAM(ii,szout,szinp)
+
+//* COPY the connectivity
+//** conn from excit
+lam[0].ampalist(tmplist)
+connmap(mat,inplist,tmplist)
+lam[0].gabalist(tmplist)
+for lvtr(XO,&x,tmplist,inhv) { 
+  XO.setlink(ininhp.link) 
+  XO.gmax(-1,-x)
+}
+

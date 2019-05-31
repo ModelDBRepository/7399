@@ -1,0 +1,18 @@
+cp ../*.hoc .
+cp /usr/site/nrniv/simctrl/hoc/nrnoc.hoc .
+cp /usr/site/nrniv/simctrl/hoc/simctrl.hoc .
+cp /usr/site/nrniv/local/hoc/grvec.hoc .
+cp /usr/site/nrniv/local/hoc/decvec.hoc .
+cp /usr/site/nrniv/local/hoc/declist.hoc .
+cp /usr/site/nrniv/local/hoc/snscode.hoc .
+cp /usr/site/nrniv/local/hoc/boxes.hoc .
+cp /usr/site/nrniv/local/hoc/spkts.hoc .
+cp /usr/site/nrniv/simctrl/hoc/default.hoc .
+cp /usr/site/nrniv/simctrl/hoc/local.hoc .
+
+
+cp /usr/site/nrniv/local/mod/sns/sns.inc .
+cp /usr/site/nrniv/local/mod/sns/snsarr.inc .
+cp /usr/site/nrniv/local/mod/sns/snshead.inc .
+cp /usr/site/nrniv/local/mod/sns/presyn.inc .
+cp /usr/site/nrniv/local/mod/bg.inc .
