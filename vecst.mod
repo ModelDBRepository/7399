@@ -1,5 +1,5 @@
 : $Id: vecst.mod,v 1.66 2001/05/15 14:54:49 billl Exp $
-
+ 
 :* COMMENT
 COMMENT
 randwd   randomly chooses n bits to set to 1
@@ -45,14 +45,12 @@ VERBATIM
 #include <limits.h> // includes LONG_MAX instead of MAXLONG which is obsolete
 
 #ifndef NRN_VERSION_GTEQ_8_2_0
-
 extern double* hoc_pgetarg();
 extern double hoc_call_func(Symbol*, int narg);
 extern FILE* hoc_obj_file_arg(int narg);
 extern void vector_resize();
 extern int vector_instance_px();
 extern void* vector_arg();
-
 #endif
 
 /* some machines do not have drand48 and srand48 so use the implementation
@@ -64,7 +62,7 @@ void my_srand48(long seedval);
 #define drand48 my_drand48
 #define srand48 my_srand48
 ENDVERBATIM
-
+ 
 :* v1.slope(num) does a linear regression to find the slope, assuming num=timestep of vector
 
 VERBATIM
@@ -75,8 +73,8 @@ static double slope(void* vv) {
 	/* how to get the instance data */
 	n = vector_instance_px(vv, &y);
 
-        if(ifarg(1)) {
-          timestep = *getarg(1);
+        if(ifarg(1)) { 
+          timestep = *getarg(1); 
         } else { printf("You must supply a timestep\n"); return 0; }
 
         sigxy= sigx= sigy= sigx2=0; // initialize these
@@ -101,7 +99,7 @@ unsigned int __uitrunc(x) double x; { return (unsigned)(int)(x);}
 #endif
 
 ENDVERBATIM
-
+ 
 :* v1.vslope(v2) does a linear regression, using v2 as the x-coords
 
 VERBATIM
@@ -114,7 +112,7 @@ static double vslope(void* vv) {
 
         if(ifarg(1)) {
           if(vector_arg_px(1, &x) != n ) {
-            hoc_execerror("Vector size doesn't match.", 0);
+            hoc_execerror("Vector size doesn't match.", 0); 
           }
           sigxy= sigx= sigy= sigx2=0; // initialize these
 
@@ -124,11 +122,11 @@ static double vslope(void* vv) {
             sigy  += y[i];
             sigx2 += x[i]*x[i];
           }
-        }
+        }         
         return (n*sigxy - sigx*sigy)/(n*sigx2 - sigx*sigx);
 }
 ENDVERBATIM
-
+ 
 :* v1.stats(num) does a linear regression, assuming num=timestep of vector
 
 VERBATIM
@@ -140,8 +138,8 @@ static double stats(void* vv) {
 	/* how to get the instance data */
 	n = vector_instance_px(vv, &y);
 
-        if(ifarg(1)) {
-          timestep = *getarg(1);
+        if(ifarg(1)) { 
+          timestep = *getarg(1); 
         } else { printf("You must supply a timestep\n"); return 0; }
 
         sigxy= sigx= sigy= sigx2=sigy2= 0; // initialize these
@@ -167,7 +165,7 @@ static double stats(void* vv) {
         return 1;
 }
 ENDVERBATIM
-
+ 
 :* v1.vstats(v2) does a linear regression, using v2 as the x-coords
 
 VERBATIM
@@ -181,7 +179,7 @@ static double vstats(void* vv) {
 
         if(ifarg(1)) {
           if(vector_arg_px(1, &x) != n ) {
-            hoc_execerror("Vector size doesn't match.", 0);
+            hoc_execerror("Vector size doesn't match.", 0); 
           }
           sigxy= sigx= sigy= sigx2=sigy2=0; // initialize these
 
@@ -208,7 +206,7 @@ static double vstats(void* vv) {
         }
 }
 ENDVERBATIM
-
+ 
 :* v1.randwd(num[,v2]) will randomly flip num bits from BVBASE to 1
 : does v1.fill(BVBASE); optionally fill v2 with the indices
 VERBATIM
@@ -227,7 +225,7 @@ static double randwd(void* vv) {
 	for (i=0,jj=0; i < flip; i++) { /* flip these bits */
 	  ii = (int) ((nx+1)*drand48());
 	  if (x[ii]==BVBASE) {
-	    x[ii] = 1.;
+	    x[ii] = 1.; 
             if (flag) { y[jj] = ii; jj++; }
 	  } else {
 	    i--;
@@ -236,7 +234,7 @@ static double randwd(void* vv) {
 	return flip;
 }
 ENDVERBATIM
-
+ 
 :* v1.hamming(v2[,v3]) compares v1 and v2 for matches, v3 gives diff vector
 VERBATIM
 static double hamming(void* vv) {
@@ -252,14 +250,14 @@ static double hamming(void* vv) {
 	  hoc_execerror("Vectors must be same size", 0);
 	}
 	for (i=0; i < nx; ++i) {
-	  if (x[i] != y[i]) { sum++;
+	  if (x[i] != y[i]) { sum++; 
             if (prflag) { z[i] = 1.; }
           } else if (prflag) { z[i] = 0.; }
         }
 	return sum;
 }
 ENDVERBATIM
-
+ 
 :* v1.indset(ind,x[,y]) sets indexed values to x and other values to optional y
 VERBATIM
 static double indset(void* vv) {
@@ -267,13 +265,13 @@ static double indset(void* vv) {
 	double* x, *y, *z, val, val2 ;
 	nx = vector_instance_px(vv, &x);
 	ny = vector_arg_px(1, &y);
-        if (hoc_is_object_arg(2)) {
+        if (hoc_is_object_arg(2)) { 
           flag=1;
-          nz = vector_arg_px(2, &z);
+          nz = vector_arg_px(2, &z); 
           if (ny!=nz) { hoc_execerror("v.indset: Vector sizes don't match.", 0); }
         } else { flag=0; val=*getarg(2); }
-        if (ifarg(3)) {
-          val2 = *getarg(3);
+        if (ifarg(3)) { 
+          val2 = *getarg(3); 
           for (i=0; i<nx; i++) { x[i]=val2; }
         }
 	for (i=0; i<ny; i++) {
@@ -283,7 +281,7 @@ static double indset(void* vv) {
 	return i;
 }
 ENDVERBATIM
-
+ 
 VERBATIM
 /* Maintain parallel int vector to avoid slowness of repeated casts */
 static int scrsz=0;
@@ -300,21 +298,21 @@ static double fewind(void* vv) {
         for (i=0;ifarg(i);i++);
 	if (i>9) hoc_execerror("ERR: fewind can only handle 9 vectors", 0);
 	num = i-2; /* number of vectors to be picked apart */
-        for (i=0;i<num;i++) {
+        for (i=0;i<num;i++) { 
           nv[i] = vector_arg_px(i+2, &vvo[i]);
           if (nx!=nv[i]) { printf("fewind ERR %d %d %d\n",i,nx,nv[i]);
             hoc_execerror("Vectors must all be same size: ", 0); }
         }
         ni = vector_arg_px(1, &ind);
-        if (ni>scrsz) {
+        if (ni>scrsz) { 
           if (scrsz>0) { free(scr); scr=(int *)NULL; }
           scrsz=ni+10000;
           scr=(int *)ecalloc(scrsz, sizeof(int));
         }
         for (i=0;i<ni;i++) scr[i]=(int)ind[i]; /* copy into integer array */
         for (j=0;j<num;j++) {
-          for (i=0;i<ni;i++) x[i]=vvo[j][scr[i]];
-          for (i=0;i<ni;i++) vvo[j][i]=x[i];
+          for (i=0;i<ni;i++) x[i]=vvo[j][scr[i]];    
+          for (i=0;i<ni;i++) vvo[j][i]=x[i];   
           vv=vector_arg(j+2); vector_resize((IvocVect*)vv, ni);
         }
 	return ni;
@@ -331,7 +329,7 @@ static double insct(void* vv) {
 	nv1 = vector_arg_px(1, &v1);
 	nv2 = vector_arg_px(2, &v2);
         for (i=0,k=0;i<nv1&&k<nx;i++) for (j=0;j<nv2&&k<nx;j++) if (v1[i]==v2[j]) x[k++]=v1[i];
-        if (k==nx) {
+        if (k==nx) { 
           printf("\tinsct WARNING: ran out of room: %d\n",k);
           for (;i<nv1;i++,j=0) for (;j<nv2;j++) if (v1[i]==v2[j]) k++;
         } else { vector_resize((IvocVect*)vv, k); } /* can't resize to make bigger */
@@ -391,19 +389,19 @@ static double nind(void* vv) {
         for (i=0;ifarg(i);i++);
 	if (i>9) hoc_execerror("ERR: nind can only handle 9 vectors", 0);
 	num = i-2; /* number of vectors to be picked apart */
-        for (i=0;i<num;i++) {
+        for (i=0;i<num;i++) { 
           nv[i] = vector_arg_px(i+2, &vvo[i]);
           if (nx!=nv[i]) { printf("nind ERR %d %d %d\n",i,nx,nv[i]);
             hoc_execerror("Vectors must all be same size: ", 0); }
         }
         ni = vector_arg_px(1, &ind);
         c = nx-ni; /* the elems indexed are to be eliminated */
-        if (ni>scrsz) {
+        if (ni>scrsz) { 
           if (scrsz>0) { free(scr); scr=(int *)NULL; }
           scrsz=ni+10000;
           scr=(int *)ecalloc(scrsz, sizeof(int));
         }
-        for (i=0,last=-1;i<ni;i++) {
+        for (i=0,last=-1;i<ni;i++) { 
           scr[i]=(int)ind[i]; /* copy into integer array */
           if (scr[i]<0 || scr[i]>=nx) hoc_execerror("nind(): Index out of bounds", 0);
           if (scr[i]<=last) hoc_execerror("nind(): indices should mono increase", 0);
@@ -415,7 +413,7 @@ static double nind(void* vv) {
             last=scr[i];
           }
           for (k=last+1;k<nx;k++,m++) { x[m]=vvo[j][k]; }
-          for (i=0;i<c;i++) vvo[j][i]=x[i];
+          for (i=0;i<c;i++) vvo[j][i]=x[i];   
           vv=vector_arg(j+2); vector_resize((IvocVect*)vv, c);
         }
 	return c;
@@ -425,7 +423,7 @@ ENDVERBATIM
 :* v1.flipbits(scratch,num) flips num bits
 : uses scratch vector of same size as v1 to make sure doesn't flip same bit twice
 VERBATIM
-static double flipbits(void* vv) {
+static double flipbits(void* vv) {	
 	int i, nx, ny, flip, ii;
 	double* x, *y;
 
@@ -447,12 +445,12 @@ static double flipbits(void* vv) {
 	return flip;
 }
 ENDVERBATIM
-
+ 
 :* v1.flipbalbits(scratch,num) flips num bits making sure to balance every 1
 : flip with a 0 flip to preserve initial power
 : uses scratch vector of same size as v1 to make sure doesn't flip same bit twice
 VERBATIM
-static double flipbalbits(void* vv) {
+static double flipbalbits(void* vv) {	
 	int i, nx, ny, flip, ii, next;
 	double* x, *y;
 
@@ -474,7 +472,7 @@ static double flipbalbits(void* vv) {
 	return flip;
 }
 ENDVERBATIM
-
+ 
 :* v1.vpr() prints out neatly
 VERBATIM
 static double vpr(void* vv) {
@@ -482,16 +480,16 @@ static double vpr(void* vv) {
   double* x;
   FILE* f;
   nx = vector_instance_px(vv, &x);
-  if (ifarg(1)) {
+  if (ifarg(1)) { 
     f = hoc_obj_file_arg(1);
     for (i=0; i<nx; i++) {
-      if (x[i]>BVBASE) { fprintf(f,"%d",1);
+      if (x[i]>BVBASE) { fprintf(f,"%d",1); 
       } else { fprintf(f,"%d",0); }
     }
     fprintf(f,"\n");
   } else {
     for (i=0; i<nx; i++) {
-      if (x[i]>BVBASE) { printf("%d",1);
+      if (x[i]>BVBASE) { printf("%d",1); 
       } else { printf("%d",0); }
     }
     printf("\n");
@@ -499,7 +497,7 @@ static double vpr(void* vv) {
   return 1.;
 }
 ENDVERBATIM
-
+ 
 :* v1.thresh() threshold above and below thresh
 VERBATIM
 static double thresh(void* vv) {
@@ -507,7 +505,7 @@ static double thresh(void* vv) {
   double *x, *y, th;
   nx = vector_instance_px(vv, &x);
   cnt=0;
-  if (hoc_is_object_arg(1)) {
+  if (hoc_is_object_arg(1)) { 
     ny = vector_arg_px(1, &y); th=0;
     if (nx!=ny) { hoc_execerror("Vector sizes don't match in thresh.", 0); }
     for (i=0; i<nx; i++) { if (x[i]>=y[i]) { x[i]= 1.; cnt++;} else { x[i]= BVBASE; } }
@@ -517,7 +515,7 @@ static double thresh(void* vv) {
   return cnt;
 }
 ENDVERBATIM
-
+ 
 :* v1.triplet() return location of a triplet
 VERBATIM
 static double triplet(void* vv) {
@@ -555,7 +553,7 @@ static double onoff(void* vv) {
   return num;
 }
 ENDVERBATIM
-
+ 
 :* vo.bpeval(outp,del)
 :  service routine for back-prop: vo=outp*(1-outp)*del
 VERBATIM
@@ -576,7 +574,7 @@ static double bpeval(void* vv) {
   return 0.;
 }
 ENDVERBATIM
-
+ 
 :* v1.sedit() string edit
 VERBATIM
 static double sedit(void* vv) {
@@ -600,8 +598,8 @@ static double w(void* vv) {
   int i, n, ni, f=0;
   double *x, *ind, th, val;
   Symbol* s; char *op;
-  if (! ifarg(1)) {
-    printf("v1.w('op',thresh[,val,v2])\n");
+  if (! ifarg(1)) { 
+    printf("v1.w('op',thresh[,val,v2])\n"); 
     printf("  a .where that sets elements in v1 to val (default 0), if v2 => only look at these elements\n");
     printf("  'op'=='function name' is a .apply targeted by v2 called as func(x[i],thresh,val)\n");
     return -1.;
@@ -611,7 +609,7 @@ static double w(void* vv) {
   th = *getarg(2);
   if (ifarg(3)) { val = *getarg(3); } else { val = 0.0; }
   if (ifarg(4)) {ni = vector_arg_px(4, &ind); f=1;} // just look at the spots indexed
-  if (!strcmp(op,"==")) {
+  if (!strcmp(op,"==")) { 
     if (f==1) {for (i=0; i<ni;i++) {if (x[(int)ind[i]]==th) { x[(int)ind[i]] = val;}}
     } else {for (i=0; i<n; i++) {if (x[i]==th) { x[i] = val;}}}
   } else if (!strcmp(op,"!=")) {
@@ -639,7 +637,7 @@ static double w(void* vv) {
   return (double)i;
 }
 ENDVERBATIM
-
+  
 :* v1.xing() a .where that looks for threshold crossings and then doesn't pick another till
 :  comes back down again
 VERBATIM
@@ -650,7 +648,7 @@ static double xing(void* vv) {
   th = *getarg(1);
   for (i=0; i<n; i++) {
     if (x[i]>th) { /* ? passing thresh */
-      if (f==0) { x[i]=1.;  f=1; } else { x[i]=0.; }
+      if (f==0) { x[i]=1.;  f=1; } else { x[i]=0.; } 
     } else {       /* below thresh */
       x[i]=0.;
       if (f==1) { f=0; } /* just passed going down */
@@ -660,7 +658,7 @@ static double xing(void* vv) {
 }
 ENDVERBATIM
 
-:* v1.xzero() a .where that looks for zero crossings
+:* v1.xzero() a .where that looks for zero crossings 
 VERBATIM
 static double xzero(void* vv) {
   int i, n, nv, up;
@@ -679,7 +677,7 @@ static double xzero(void* vv) {
   return cnt;
 }
 ENDVERBATIM
-
+  
 :* v1.sw(FROM,TO) switchs all FROMs to TO
 VERBATIM
 static double sw(void* vv) {
@@ -694,7 +692,7 @@ static double sw(void* vv) {
   return n;
 }
 ENDVERBATIM
-
+ 
 :* v.v2d(&x) copies from vector to double area -- a seg error waiting to happen
 VERBATIM
 static double v2d(void* vv) {
@@ -708,7 +706,7 @@ static double v2d(void* vv) {
   return n;
 }
 ENDVERBATIM
-
+ 
 :* v.d2v(&x) copies from double area to vector -- a seg error waiting to happen
 VERBATIM
 static double d2v(void* vv) {
@@ -722,7 +720,7 @@ static double d2v(void* vv) {
   return n;
 }
 ENDVERBATIM
-
+ 
 :* v1.ismono([arg]) asks whether is monotonically increasing, with arg==-1 - decreasing
 :  with arg==0 - all same
 VERBATIM
@@ -731,7 +729,7 @@ static double ismono(void* vv) {
   double *x,last;
   n = vector_instance_px(vv, &x);
   if (ifarg(1)) { flag = (int)*getarg(1); } else { flag = 1; }
-  last=x[0];
+  last=x[0]; 
   if (flag==1) {
     for (i=1; i<n && x[i]>=last; i++) last=x[i];
   } else if (flag==-1) {
@@ -742,7 +740,7 @@ static double ismono(void* vv) {
   if (i==n) return 1.; else return 0.;
 }
 ENDVERBATIM
-
+ 
 :* v1.count(num) returns number of instances of num
 VERBATIM
 static double count(void* vv) {
@@ -755,7 +753,7 @@ static double count(void* vv) {
 }
 ENDVERBATIM
 
-:* fac (n)
+:* fac (n) 
 : from numerical recipes p.214
 FUNCTION fac (n) {
 VERBATIM {
@@ -787,7 +785,7 @@ VERBATIM {
 }
 ENDVERBATIM
 }
-
+ 
 :* logfac (n)
 : from numerical recipes p.214
 FUNCTION logfac (n) {
@@ -820,10 +818,10 @@ VERBATIM {
 }
 ENDVERBATIM
 }
-
+ 
 :* v1.frd(file,num,size) perform an fread
 VERBATIM
-static double frd(void* vv) {
+static double frd(void* vv) {	
 	int i, nx, num, size;
         char *xf;
         FILE* f;
@@ -835,13 +833,13 @@ static double frd(void* vv) {
 #else
         f = hoc_obj_file_arg(1);
 #endif
-        num = (int)*getarg(2);
-        size = (int)*getarg(3);
-        xf = (char *)malloc(num * size);
-        if (num!=nx) { hoc_execerror("Correct vector size ", 0); }
-        fread(xf, num, size, f);
-        for (i=0;i<num;++i) x[i] = (double)xf[i];
-	return 0.;
+  num = (int)*getarg(2);
+  size = (int)*getarg(3);
+  xf = (char *)malloc(num * size);
+  if (num!=nx) { hoc_execerror("Correct vector size ", 0); }
+  fread(xf, num, size, f);
+  for (i=0;i<num;++i) x[i] = (double)xf[i];
+  return 0.;
 }
 ENDVERBATIM
 
@@ -957,8 +955,7 @@ next()
 	x[0] = LOW(p[0]);
 }
 
-void
-my_srand48(long seedval)
+void my_srand48(long seedval)
 {
 	SEED(X0, LOW(seedval), HIGH(seedval));
 }
