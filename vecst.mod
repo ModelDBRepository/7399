@@ -41,8 +41,6 @@ PARAMETER {
 VERBATIM
 #include <stdlib.h>
 #include <math.h>
-/* actually doesn't contain MAXLONG #include <float.h> /* contains MAXLONG */
-#include <limits.h> // includes LONG_MAX instead of MAXLONG which is obsolete
 
 #ifndef NRN_VERSION_GTEQ_8_2_0
 extern double* hoc_pgetarg();
