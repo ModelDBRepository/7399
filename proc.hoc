@@ -91,7 +91,7 @@ proc connmap () { local ii,jj,isz,osz,num
         if (num<0) {
           printf("CONNMAP ERROR: gmax must not be <0.: %d %d %g.\n",ii,jj,num)
           return }
-        XO.setlink(YO.link)
+        XO.setlink(YO.link, YO.nsyn, YO.maxsyn)
         XO.gmax(-1,num)
       }
       jj=jj+1
