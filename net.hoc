@@ -54,7 +54,7 @@ lam[0].ampalist(tmplist)
 connmap(mat,inplist,tmplist)
 lam[0].gabalist(tmplist)
 for lvtr(XO,&x,tmplist,inhv) { 
-  XO.setlink(ininhp.link) 
+  XO.setlink(ininhp.link, ininhp.nsyn, ininhp.maxsyn)
   XO.gmax(-1,-x)
 }
 

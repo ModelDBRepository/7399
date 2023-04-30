@@ -114,9 +114,9 @@ PROCEDURE init_arrays(num) {
 }
 
 VERBATIM
-static void hshake(SynS* ss, PreL* pl, int flag);
+static void hshake(SynS* ss, PreL* pl, int flag, double* p_nsyn, double* p_maxsyn);
 ENDVERBATIM
-: 2 arguments - index, presyn link
+: 3 arguments - presyn link, presyn nsyn, presyn maxsyn
 PROCEDURE setlink() {
 VERBATIM { 
   int ii, x, is_new;
@@ -124,13 +124,10 @@ VERBATIM {
   double ptemp;
   PreL *ppsyn;
     
-  if (ifarg(2)) { 
-    x = (int)*getarg(1);
-    ptemp = *getarg(2);		/* pick up pointer */
-  } else {
-    x = nsyn;
-    ptemp = *getarg(1);
-  }
+  x = nsyn;
+  ptemp = *getarg(1);
+  double* p_nsyn = getarg(2);
+  double* p_maxsyn = getarg(3);
 
   if (x >= maxsyn) {
     init_arrays(maxsyn+POSTINC); /* #DEFINE POSTINC 5 */
@@ -156,7 +153,7 @@ VERBATIM {
     is_new = 0;
   }
 
-  hshake(sns,ppsyn,is_new);
+  hshake(sns, ppsyn, is_new, p_nsyn, p_maxsyn);
 
   x *= (int)CHAINLEN;
   for (ii=x;ii < x + CHAINLEN;ii++) {
@@ -179,16 +176,10 @@ ENDVERBATIM
 
 : manipulate the presynaptic list remotely
 VERBATIM
-static void hshake(SynS* ss, PreL* pl, int flag) {
+static void hshake(SynS* ss, PreL* pl, int flag, double* nn, double* mx) {
 /* ls will be a pointer to presyn cell's array of pointers */
 /* flag == 1 if this is a brand new entry */
   int ii;
-  double *nn;
-  double *mx;
-
-  nn = pl->nnpre; /* pointer to presyn npre */
-  mx = pl->mxpre; /* pointer to presyn maxpre */
-
   /* erase presyn pointer if this has been set before */
   if (flag == 0) {		/* an old entry */
     /* fall out of loop if a pointer exists already */
