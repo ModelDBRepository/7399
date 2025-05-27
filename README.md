@@ -1,5 +1,5 @@
 Lytton WW. Adapting a feedforward heteroassociative network to
-Hodgkin-Huxley dynamics.  J Computational Neuroscience, 5:353--364, 1998.
+Hodgkin-Huxley dynamics. *J Computational Neuroscience*, 5:353–364, 1998.
 
 At launch this example quantitatively reproduces figure 5 of the paper.
 The window appearance is shown in fig5.gif.
@@ -11,7 +11,9 @@ NB: program uses SNS synaptic formalism that predates NetCon.
 Also it supplies its own standard run library so Graphs
 from the NEURONMainMenu will not work. Run different
 patterns with
-	show(2)
+
+    show(2)
+
 where the 2 may be replaced by an integer in the range from 0 to 59.
 The results of each run will be displayed in the tray after the run.
 
@@ -32,3 +34,5 @@ Changelog
          Required for upcoming NEURON 9.0.0
 2023-04: Do not store pointers to RANGE variables.
          Required for upcoming NEURON 9.0.0
+
+2025-05-27 – Standardized to Markdown.
