@@ -30,9 +30,11 @@ Changelog
 ---------
 2022-05: Updated MOD files to contain valid C++ and be compatible with the
          upcoming versions 8.2 and 9.0 of NEURON.
+
 2022-12: passiv.mod: drop INDEPENDENT block for v
          Required for upcoming NEURON 9.0.0
+
 2023-04: Do not store pointers to RANGE variables.
          Required for upcoming NEURON 9.0.0
 
-2025-05-27 – Standardized to Markdown.
+2025-05-27: Standardized to Markdown.
